@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:lista_de_tareas/app/model/task.dart';
 import 'package:lista_de_tareas/app/view/components/logo_esquina.dart';
 import 'package:lista_de_tareas/app/view/components/texto_w600.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TaskListPage extends StatefulWidget {
   const TaskListPage({Key? key}) : super(key: key);
@@ -46,7 +49,7 @@ class _TaskListPageState extends State<TaskListPage> {
         context: context,
         isScrollControlled: true,
         builder: (_) => _NewTaskModal(onTaskCreated: (Task task) {
-          setState(() {
+          setState(()  {
             taskList.add(task);
           });
         },),
@@ -65,7 +68,7 @@ class _NewTaskModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Container(
-      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 23),
+      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 15),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.vertical(top: Radius.circular(21)),
         color: Colors.white,
@@ -74,6 +77,16 @@ class _NewTaskModal extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+            Container(
+              width: 100,
+              height: 3,
+              color: Theme.of(context).colorScheme.primary,
+            )
+          ],),
+          const SizedBox(height: 26,),
           const Tipografia('Nueva Tarea'),
           const SizedBox(height: 26,),
           TextField(
@@ -84,7 +97,7 @@ class _NewTaskModal extends StatelessWidget {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
-               hintText: ('Descripcion de la tarea'),
+               hintText: ('Descripción de la tarea'),
             ),
           ),
           const SizedBox(height: 26,),
@@ -187,6 +200,7 @@ class _TaskItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Card(
+        elevation: 4,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(21)),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 21, vertical: 18),
