@@ -87,45 +87,50 @@ class _NewTaskModal extends StatelessWidget {
         borderRadius: BorderRadius.vertical(top: Radius.circular(21)),
         color: Colors.white,
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-            Container(
-              width: 100,
-              height: 3,
-              color: Theme.of(context).colorScheme.primary,
-            )
-          ],),
-          const SizedBox(height: 26,),
-          const Tipografia('Nueva Tarea'),
-          const SizedBox(height: 26,),
-          TextField(
-            controller: _controllerInputText,
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
+      child: Padding(
+        padding:  EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min ,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+              Container(
+                width: 100,
+                height: 3,
+                color: Theme.of(context).colorScheme.primary,
+              )
+            ],),
+            const SizedBox(height: 26,),
+            const Tipografia('Nueva Tarea'),
+            const SizedBox(height: 26,),
+            TextField(
+              controller: _controllerInputText,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                 hintText: ('Descripción de la tarea'),
               ),
-               hintText: ('Descripción de la tarea'),
             ),
-          ),
-          const SizedBox(height: 26,),
-          ElevatedButton(
-              onPressed: (){
-                if(_controllerInputText.text.isNotEmpty){
-                  final task = Task(_controllerInputText.text);
-                  onTaskCreated(task);
-                  Navigator.of(context).pop();
-                }
-              },
-              child: const Text('Guardar'),
-          ),
-        ],
+            const SizedBox(height: 26,),
+            ElevatedButton(
+                onPressed: (){
+                  if(_controllerInputText.text.isNotEmpty){
+                    final task = Task(_controllerInputText.text);
+                    onTaskCreated(task);
+                    Navigator.of(context).pop();
+                  }
+                },
+                child: const Text('Guardar'),
+            ),
+          ],
+        ),
       ),
     );
   }
