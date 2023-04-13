@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
     //Colors:
     const primary = Color(0xFF40B7AD);
     const secondary = Color(0xFF1A9F9C);
+    //const secondary = Color(0xFF086c64);
     const backgroundColor = Color(0xFFF5F5F5);
     const textColor = Color(0xFF4A4A4A);
 

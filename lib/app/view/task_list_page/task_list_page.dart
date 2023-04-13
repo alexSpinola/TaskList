@@ -1,10 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:lista_de_tareas/app/model/task.dart';
+import 'package:lista_de_tareas/app/repository/task_repository.dart';
 import 'package:lista_de_tareas/app/view/components/logo_esquina.dart';
 import 'package:lista_de_tareas/app/view/components/texto_w600.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class TaskListPage extends StatefulWidget {
   const TaskListPage({Key? key}) : super(key: key);
@@ -15,7 +13,7 @@ class TaskListPage extends StatefulWidget {
 
 class _TaskListPageState extends State<TaskListPage> {
 
-  final taskList = <Task>[];
+  final TaskRepository taskRepository = TaskRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +21,30 @@ class _TaskListPageState extends State<TaskListPage> {
       body: Column(
         children: [
           const _Header(),
-          Expanded(child: _TaskList(
-            taskList,
-            onTapDoneChange: (task){
-              task.done = !task.done;
-              setState(() {
-
-              });
-             },
-           ),
+          Expanded(
+            child: FutureBuilder<List<Task>>(
+              future: taskRepository.getTasks(),
+              builder: (context, snapshot) {
+                if(snapshot.connectionState == ConnectionState.waiting){
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if(!snapshot.hasData || snapshot.data!.isEmpty){
+                  return const Center(
+                    child: Text('No hay tareas'),
+                  );
+                }
+                return _TaskList(
+                  snapshot.data!,
+                  onTapDoneChange: (task){
+                    task.done = !task.done;
+                    taskRepository.saveTasks(snapshot.data!);
+                    setState(() {});
+                   },
+                );
+              }
+            ),
           ),
         ],
       ),
@@ -46,13 +59,14 @@ class _TaskListPageState extends State<TaskListPage> {
 
   void _showNewTaskModal(BuildContext context) {
     showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        builder: (_) => _NewTaskModal(onTaskCreated: (Task task) {
-          setState(()  {
-            taskList.add(task);
-          });
-        },),
+      context: context,
+      isScrollControlled: true,
+      builder: (_) => _NewTaskModal(
+        onTaskCreated: (Task task) {
+          taskRepository.addTask(task);
+          setState(() {});
+        },
+      ),
     );
   }
 }
