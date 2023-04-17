@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lista_de_tareas/app/model/task.dart';
 import 'package:lista_de_tareas/app/repository/task_repository.dart';
 import 'package:lista_de_tareas/app/view/components/logo_esquina.dart';
@@ -83,10 +84,6 @@ class _NewTaskModal extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Container(
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 15),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(21)),
-        color: Colors.white,
-      ),
       child: Padding(
         padding:  EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom
@@ -109,14 +106,25 @@ class _NewTaskModal extends StatelessWidget {
             const SizedBox(height: 26,),
             TextField(
               controller: _controllerInputText,
+              maxLength: 30,
+              maxLines: 1,
+              keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.white,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
                  hintText: ('Descripción de la tarea'),
               ),
+              onSubmitted: (String value){
+                /*
+                if(_controllerInputText.text.isNotEmpty){
+                    final task = Task(_controllerInputText.text);
+                    onTaskCreated(task);
+                    Navigator.of(context).pop();
+                  }
+                 */
+              },
             ),
             const SizedBox(height: 26,),
             ElevatedButton(
