@@ -46,8 +46,12 @@ class Splash extends StatelessWidget {
                 }));
               },
               style: ElevatedButton.styleFrom(
-                minimumSize: const Size(100, 54),
+                minimumSize: const Size(200, 54),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30)),
+                )
               ),
+            
               child: const Text('Empezar'),
           ),
         ],
